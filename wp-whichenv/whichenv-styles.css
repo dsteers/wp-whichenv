@@ -1,0 +1,34 @@
+
+#wp-admin-bar-environment-indicator a:hover {
+	background-color: transparent !important;
+	color: #FFFFFF !important;
+	cursor: default;
+}
+.whichenv {
+	max-width: 1000px;
+}
+.whichenv .row {
+	margin: 30px 10px;
+}
+.whichenv span {
+	font-weight: bold;
+}
+
+.whichenv .urls input {
+	width: 70%;
+	float: right;
+	margin-right: 15px
+}
+
+.whichenv p {
+	clear: both;
+}
+
+@media (min-width: 690px) {
+	.urls {
+		width: 49%;
+		display: inline-block;
+		vertical-align: top;
+	}
+}
+
