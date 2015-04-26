@@ -27,37 +27,31 @@ GNU General Public License for more details.
 /*
 WHAT THIS PAGE DOES:
 
-This page is merely for constructing the html form within the admin tools section.
-The form will post to the whichenv-options page where the data will be stored and reset.
+This page is processes stored url information and sets the admin option if all 
+is filled out properly.
+
 */
 
 
 // Plugin path from root directory
 define( 'WHICHENV__PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-//RP3 standard url indicators
-$urlInd = array('test','staging','prod','dev','intdev','qc','uat');
-
-
 // Register JS and CSS
-	wp_register_style('whichenv-styles.css', WHICHENV__PLUGIN_URL . 'whichenv-styles.css');
-	wp_enqueue_style( 'whichenv-styles.css');
-	wp_register_script('whichenv.js', WHICHENV__PLUGIN_URL . 'whichenv.js');
-	wp_enqueue_script( 'whichenv.js');
-
+wp_register_style('whichenv-styles.css', WHICHENV__PLUGIN_URL . 'whichenv-styles.css');
+wp_enqueue_style( 'whichenv-styles.css');
+wp_register_script('whichenv.js', WHICHENV__PLUGIN_URL . 'whichenv.js');
+wp_enqueue_script( 'whichenv.js');
 
 // Initializing the url_standard var 
 if(get_option('url_standard')!='false') {
 	update_option('url_standard', 'true');
 }
 
-
 // Include admin settings page in wp dashboard
 function whichenv_admin() {
     include('wp-whichenv-settings.php');
     include('whichenv-options.php');
 }
-
 
 // Insert Which Environment tab in tools menu in dashboard
 function whichenv_admin_setup() {
@@ -67,33 +61,52 @@ function whichenv_admin_setup() {
 add_action('admin_menu', 'whichenv_admin_setup');
 
 
-//function: tests url against standard
-function which_standard() {
-	$url = get_site_url();
-	//get url
-	//if url first part matches one of the array objects, return it
-
-}
-
-
-//function: tests url against custom
-function which_custom() {
-
-}
-
-
 function my_tweaked_admin_bar() {
-	global $wp_admin_bar;
+	global $wp_admin_bar;	
+	//TODO: exchange this variable to call on get_stite_url()
+	$this_url = 'dev.plugin.rp3.vagrant.local';
+	$myString='Improper Whichenv Url Settings';
 
-	//going to have to do testing and allocation here due to variable speciality
-	$myString = 'my string';
+	//RP3 standard url indicators
+	$urlInd = array(
+		'test' => "Testing",
+		'staging' => "Staging",
+		'prod' => "Production",
+		'dev' => "Development",
+		'intdev' => "Integration",
+		'qc' => "Quality Control",
+		'uat' => "User Acceptance Testing"
+	);
+	//Stored custom url types
+	$optionKey = array(
+		'development' => "Development",
+		'integration' => "Integration",
+		'qc' => "Quality Control",
+		'uat' => "User Acceptance Testing",
+		'production' => "Production",
+		'testing' => "Testing",
+		'staging' => "Staging"
+	);
+
+	//IF IS STANDARD
+	if(get_option('url_standard')!='false') {
+		foreach($urlInd as $url => $value){
+			if( strpos($this_url,$url) !== false ) { 
+				$myString = $value;
+			} 
+		}
+	} else {
+		foreach($optionKey as $option => $value){
+			if( strcmp( get_option( $option.'_env'), $this_url ) == 0  ) { 
+				$myString = $value;
+			}
+		}
+	}
 
 	$wp_admin_bar->add_node(array(
-		'id'    => 'my-link',
+		'id'    => 'environment-indicator',
 		'title' => $myString,
 		'href'  => '#!'
 	));
 }
 add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' ); 
-
-	
