@@ -1,9 +1,39 @@
 
 #wp-admin-bar-environment-indicator a:hover {
 	background-color: transparent !important;
-	color: #FFFFFF !important;
-	cursor: default;
+	color: gold !important;
 }
+#wp-admin-bar-environment-indicator a {
+	color: gold !important;
+}
+
+#wp-admin-bar-warning-duplicate a:hover {
+	background-color: #7a0000 !important;
+	color: white !important;
+}
+#wp-admin-bar-warning-duplicate a {
+	text-transform: uppercase;
+	color: white !important;
+	background-color: #7a0000 !important;
+}
+
+#wp-admin-bar-environment-indicator-cf a:hover {
+	background-color: goldenrod !important;
+	color: white !important;
+}
+#wp-admin-bar-environment-indicator-cf a {
+	background-color: goldenrod !important;
+	color: white !important;
+}
+
+.warning-duplicates{
+	margin-bottom: 5px;
+	padding: 20px 8px;
+	width: 90%;
+	background-color: #7a0000;
+	color: white !important;
+}
+
 .whichenv {
 	max-width: 1000px;
 }
@@ -22,6 +52,7 @@
 
 .whichenv p {
 	clear: both;
+	padding-right: 25px;
 }
 
 @media (min-width: 690px) {

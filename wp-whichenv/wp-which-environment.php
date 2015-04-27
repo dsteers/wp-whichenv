@@ -49,12 +49,14 @@ if(get_option('url_standard')!='false') {
 
 // Include admin settings page in wp dashboard
 function whichenv_admin() {
-    include('wp-whichenv-settings.php');
     include('whichenv-options.php');
+	include('whichenv-error-testing.php');
+    include('wp-whichenv-settings.php');
 }
 
 // Insert Which Environment tab in tools menu in dashboard
 function whichenv_admin_setup() {
+	add_management_page("", "", 1, "whichenv-error-testing", "whichenv_admin");
 	add_management_page("Which Environment Settings", "Whichenv", 1, "Which-Environment-Settings", "whichenv_admin");
 	add_management_page("", "", 1, "whichenv-options", "whichenv_admin");
 }	 
@@ -65,8 +67,8 @@ function my_tweaked_admin_bar() {
 	global $wp_admin_bar;	
 	//TODO: exchange this variable to call on get_stite_url()
 	$this_url = get_site_url();
-	$myString='Improper Whichenv Url Settings';
-
+	$env ='Warning !';
+	$prod_env = 'environment-indicator';
 	//RP3 standard url indicators
 	$urlInd = array(
 		'test' => "Testing",
@@ -89,24 +91,44 @@ function my_tweaked_admin_bar() {
 	);
 
 	//IF IS STANDARD
-	if(get_option('url_standard')!='false') {
+	if(get_option('url_standard')=='true') {
 		foreach($urlInd as $url => $value){
 			if( strpos($this_url,$url) !== false ) { 
-				$myString = $value;
+				$env = $value;
 			} 
+		}
+		if(strcmp($env,'Warning !')==0)  {
+			update_option('has_duplicate', 'true');
 		}
 	} else {
 		foreach($optionKey as $option => $value){
 			if( strcmp( get_option( $option.'_env'), $this_url ) == 0  ) { 
-				$myString = $value;
+				$env = $value;
 			}
 		}
 	}
 
-	$wp_admin_bar->add_node(array(
-		'id'    => 'environment-indicator',
-		'title' => $myString,
-		'href'  => '#!'
-	));
+	if( (strcmp($env, 'User Acceptance Testing')==0)|| (strcmp($env, 'Production')==0) ) {
+		$prod_env = 'environment-indicator-cf';
+	}
+
+	if(get_option('has_duplicate')=='true' || strcmp($env,'Warning !')==0) { 
+		update_option('has_duplicate', 'true');
+
+		$wp_admin_bar->add_node(array(
+				'id'    => 'warning-duplicate',
+				'title' => 'Warning !',
+				'href'  => get_admin_url().'tools.php?page=Which-Environment-Settings'
+		));
+	}else { 
+		update_option('has_duplicate', 'false');
+
+		$wp_admin_bar->add_node(array(
+			'id'    => $prod_env,
+			'title' => $env,
+			'href'  => get_admin_url().'tools.php?page=Which-Environment-Settings'
+		));
+	}
 }
 add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' ); 
+

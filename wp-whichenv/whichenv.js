@@ -1,8 +1,4 @@
 jQuery( function ( $ ) {
-	$( document ).ready(function() {
-  		$( '.whichenv .urls input' ).attr('readonly',true);
-	});
-
 	$( '.url_standard' ).click(function(){
 		$( '.whichenv .urls input' ).attr('readonly',true);
 		$( '.whichenv .urls input' ).css('color','transparent');
