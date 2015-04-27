@@ -24,6 +24,7 @@ Custom url data sent here to be insert into or removed from settings section in 
 // Reset values to empty for RP3 standard check
 $postData = array('development','integration','qc','uat','production','testing','staging');
 if( ($_POST['url_standard'] == 'standard' )  ) { 
+	update_option('url_standard', 'true');
 	foreach($postData as $post) {
 		if ($_POST[$post]){
 			update_option($post.'_env','','yes');
@@ -33,6 +34,7 @@ if( ($_POST['url_standard'] == 'standard' )  ) {
 
 // Set custom url values 
 if( ($_POST['url_standard'] == 'custom' ) ) { 
+	update_option('url_standard', 'false');
 	foreach($postData as $post) {
 		if ($_POST[$post]){
 			update_option($post.'_env',$_POST[$post],'yes');

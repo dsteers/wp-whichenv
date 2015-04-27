@@ -31,19 +31,28 @@ echo
 	'
 	<div class="whichenv">
 		<div class="row">
-			<h1>Which Environment Settings</h1>
+			<h1>Whichenv Settings</h1>
 			<p>The Which Environment plugin allows the user to differentiate between multiple 
 			wordpress environments by adding visual indicators to the admin bar.</p>
 		</div>
 		<div class="row">
 			<form method="post" action="'.get_admin_url().'tools.php?page=whichenv-options" class="url_options">
-				<div class="row">
-					<input type="radio" class="url_standard" name="url_standard" value="standard"> Assume RP3 standard<br>
-					<p>Checking this box will automate the url screening process which expects a company specific naming convention.
-					Unless you are certain that your urls follow this convention, it is advised to enter the specific unique values below.</p>
-					<input type="radio" class="url_custom" name="url_standard" value="custom" > Use Custom url<br>
-				</div>
-				<div class="urls">
+				<div class="row"> ';
+
+if(get_option('url_standard')!='false') {
+	echo '<input type="radio" class="url_standard" name="url_standard" value="standard" checked> Assume RP3 standard<br>
+		<p>Checking this box will automate the url screening process which expects a company specific naming convention.
+		Unless you are certain that your urls follow this convention, it is advised to enter the specific unique values below.</p>
+		<input type="radio" class="url_custom" name="url_standard" value="custom" > Use Custom url<br>';
+}else {
+		echo '<input type="radio" class="url_standard" name="url_standard" value="standard"> Assume RP3 standard<br>
+			<p>Checking this box will automate the url screening process which expects a company specific naming convention.
+			Unless you are certain that your urls follow this convention, it is advised to enter the specific unique values below.</p>
+			<input type="radio" class="url_custom" name="url_standard" value="custom" checked> Use Custom url<br>';
+}
+					
+echo '</div>
+		<div class="urls">
 					<span>Development</span> <input type="text" name="development" value="'.$development_env.'" ><br>
 					<p>Generally your local development environment. This is your personal testing environment where breaking things is ok! so 
 					feel free to experiment a little!</p>
