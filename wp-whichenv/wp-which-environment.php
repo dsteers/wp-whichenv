@@ -55,7 +55,7 @@ function whichenv_admin() {
 
 // Insert Which Environment tab in tools menu in dashboard
 function whichenv_admin_setup() {
-	add_management_page("Which Environment Settings", "Which Environment Settings", 1, "Which-Environment-Settings", "whichenv_admin");
+	add_management_page("Which Environment Settings", "Whichenv", 1, "Which-Environment-Settings", "whichenv_admin");
 	add_management_page("", "", 1, "whichenv-options", "whichenv_admin");
 }	 
 add_action('admin_menu', 'whichenv_admin_setup');
@@ -64,7 +64,7 @@ add_action('admin_menu', 'whichenv_admin_setup');
 function my_tweaked_admin_bar() {
 	global $wp_admin_bar;	
 	//TODO: exchange this variable to call on get_stite_url()
-	$this_url = 'dev.plugin.rp3.vagrant.local';
+	$this_url = get_site_url();
 	$myString='Improper Whichenv Url Settings';
 
 	//RP3 standard url indicators
